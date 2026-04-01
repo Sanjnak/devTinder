@@ -8,23 +8,6 @@ const User = require("../models/user");
 
 authRouter.post("/login", async (req, res) => {
   try {
-    const { token } = req.cookies;
-    if (token) {
-      try {
-        const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
-        const loggedInUser = await User.findById(decodedToken._id);
-        if (loggedInUser) {
-          return res
-            .status(409)
-            .send("A user is already logged in. Please logout first.");
-        }
-      } catch (err) {
-        res.cookie("token", null, {
-          expires: new Date(Date.now()),
-        });
-      }
-    }
-
     const { emailId, password } = req.body;
     const validUser = await User.findOne({ emailId: emailId });
     if (!validUser) {
