@@ -3,7 +3,6 @@ const authRouter = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { validationSignup } = require("../utils/validation");
-const { JWT_SECRET } = require("../config/env");
 
 const User = require("../models/user");
 
@@ -12,7 +11,7 @@ authRouter.post("/login", async (req, res) => {
     const { token } = req.cookies;
     if (token) {
       try {
-        const decodedToken = await jwt.verify(token, JWT_SECRET);
+        const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
         const loggedInUser = await User.findById(decodedToken._id);
         if (loggedInUser) {
           return res

@@ -1,7 +1,3 @@
-const process = require("node:process");
-
-process.loadEnvFile();
-
 const express = require("express");
 const connectDB = require("./config/database");
 const cookieParser = require("cookie-parser");
@@ -10,7 +6,8 @@ const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
-const { PORT } = require("./config/env");
+
+require("dotenv").config();
 
 const app = express();
 
@@ -31,8 +28,8 @@ app.use("/", userRouter);
 connectDB()
   .then(() => {
     console.log("Database connected successfully");
-    app.listen(PORT, () => {
-      console.log(`Server is listening on ${PORT}...`);
+    app.listen(process.env.PORT, () => {
+      console.log(`Server is listening on ${process.env.PORT}...`);
     });
   })
   .catch((err) => {

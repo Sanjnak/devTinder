@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
-const { MONGODB_URI } = require("./env");
+
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(MONGODB_URI);
+    // console.log(process.env.MONGODB_URI);
+
+    await mongoose.connect(process.env.MONGODB_URI);
   } catch (error) {
     if (error?.code === "ECONNREFUSED" && error?.hostname?.includes("mongodb.net")) {
       throw new Error(
