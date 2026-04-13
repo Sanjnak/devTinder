@@ -6,10 +6,14 @@ const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
+const { createServer } = require('node:http');
+const initializeSocket = require("./utils/socket");
 
 require("dotenv").config();
 
 const app = express();
+const server = createServer(app);
+initializeSocket(server);
 
 app.use(express.json());
 app.use(cookieParser());
@@ -28,7 +32,7 @@ app.use("/", userRouter);
 connectDB()
   .then(() => {
     console.log("Database connected successfully");
-    app.listen(process.env.PORT, () => {
+    server.listen(process.env.PORT, () => {
       console.log(`Server is listening on ${process.env.PORT}...`);
     });
   })
